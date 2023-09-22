@@ -8,7 +8,7 @@ const tit_len = 30;
 const desc_len = 100;
 
 window.addEventListener('click', (e) => {
-	if (e.target.nodeName === 'IMG') createPop();
+	if (e.target.nodeName === 'IMG') createPop(e.target.getAttribute('data-vid'));
 	if (e.target.className === 'close') removePop();
 });
 
@@ -37,7 +37,9 @@ fetch(resultURL)
           <span>${date}</span>
         </div>
         <div class='pic'>
-          <img src='${data.snippet.thumbnails.standard.url}'>
+          <img src='${data.snippet.thumbnails.standard.url}' data-vid=${
+				data.snippet.resourceId.videoId
+			}>
         </div>
       </article>
       `;
@@ -45,17 +47,22 @@ fetch(resultURL)
 		frame.innerHTML = tags;
 	});
 
-function createPop() {
+function createPop(id) {
+	console.log(id);
 	const aside = document.createElement('aside');
 	aside.innerHTML = `
-    <div class='con'></div>
+    <div class='con'>
+      <iframe src='https://www.youtube.com/embed/${id}'></iframe>
+    </div>
     <span class='close'>close</span>
   `;
 
 	document.body.append(aside);
+	document.body.style.overflow = 'hidden';
 }
 
 function removePop() {
 	const pop = document.querySelector('aside');
 	pop.remove();
+	document.body.style.overflow = 'auto';
 }
