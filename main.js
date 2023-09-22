@@ -7,12 +7,10 @@ const resultURL = `${baseURL}?key=${api_key}&part=snippet&playlistId=${pid}&maxR
 const tit_len = 30;
 const desc_len = 100;
 
-let text = 'beef-lettuce-tomato';
-text = text
-	.split('-')
-	.map((el) => el.charAt(0).toUpperCase() + el.slice(1))
-	.join(' ');
-console.log(text);
+window.addEventListener('click', (e) => {
+	if (e.target.nodeName === 'IMG') createPop();
+	if (e.target.className === 'close') removePop();
+});
 
 fetch(resultURL)
 	.then((data) => data.json())
@@ -46,3 +44,18 @@ fetch(resultURL)
 		});
 		frame.innerHTML = tags;
 	});
+
+function createPop() {
+	const aside = document.createElement('aside');
+	aside.innerHTML = `
+    <div class='con'></div>
+    <span class='close'>close</span>
+  `;
+
+	document.body.append(aside);
+}
+
+function removePop() {
+	const pop = document.querySelector('aside');
+	pop.remove();
+}
